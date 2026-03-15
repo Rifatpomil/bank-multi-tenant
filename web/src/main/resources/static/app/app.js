@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('axonBank', [
+angular.module('bankMultiTenant', [
     'ui.bootstrap',
     'ngStomp'
 ]);

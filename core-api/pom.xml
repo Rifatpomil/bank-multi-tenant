@@ -18,14 +18,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>axon-bank-core-api</artifactId>
+    <artifactId>bank-multi-tenant-core-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>Axon Bank - Core API</name>
+    <name>Bank Multi-Tenant - Core API</name>
 
     <parent>
         <groupId>org.axonframework.samples</groupId>
-        <artifactId>axon-bank</artifactId>
+        <artifactId>bank-multi-tenant</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 

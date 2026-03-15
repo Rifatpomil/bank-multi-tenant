@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('axonBank')
+angular.module('bankMultiTenant')
     .controller('BankAccountsCtrl', function ($scope, $uibModal, BankAccountService, TenantService, AiService) {
         $scope.currentTenant = TenantService.getTenantId();
         $scope.onTenantChange = function () {

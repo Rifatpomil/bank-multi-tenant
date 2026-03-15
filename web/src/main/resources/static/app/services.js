@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('axonBank')
+angular.module('bankMultiTenant')
     .service('TenantService', function () {
-        var STORAGE_KEY = 'axonbank-tenant-id';
+        var STORAGE_KEY = 'bank-multi-tenant-tenant-id';
         var currentTenant = (function () {
             try {
                 return sessionStorage.getItem(STORAGE_KEY) || 'default';

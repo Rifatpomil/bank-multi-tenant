@@ -18,14 +18,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>axon-bank-query</artifactId>
+    <artifactId>bank-multi-tenant-query</artifactId>
     <packaging>jar</packaging>
 
-    <name>Axon Bank - Query</name>
+    <name>Bank Multi-Tenant - Query</name>
 
     <parent>
         <groupId>org.axonframework.samples</groupId>
-        <artifactId>axon-bank</artifactId>
+        <artifactId>bank-multi-tenant</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -46,7 +46,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axon-bank-core-api</artifactId>
+            <artifactId>bank-multi-tenant-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -19,11 +19,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.axonframework.samples</groupId>
-    <artifactId>axon-bank</artifactId>
+    <artifactId>bank-multi-tenant</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Axon Bank</name>
+    <name>Bank Multi-Tenant</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -41,9 +41,10 @@
     </properties>
 
     <modules>
-        <module>core</module>
         <module>core-api</module>
+        <module>core</module>
         <module>query</module>
+        <module>ai</module>
         <module>web</module>
     </modules>
 

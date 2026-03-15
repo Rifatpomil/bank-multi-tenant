@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>axon-bank</artifactId>
+        <artifactId>bank-multi-tenant</artifactId>
         <groupId>org.axonframework.samples</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>axon-bank-ai</artifactId>
-    <name>Axon Bank AI</name>
+    <artifactId>bank-multi-tenant-ai</artifactId>
+    <name>Bank Multi-Tenant - AI</name>
     <description>AI-powered analytics, fraud detection, anomaly alerts, financial insights,
         balance forecasting, and natural language command interface.</description>
 
@@ -18,12 +18,12 @@
         <!-- Project modules -->
         <dependency>
             <groupId>org.axonframework.samples</groupId>
-            <artifactId>axon-bank-core-api</artifactId>
+            <artifactId>bank-multi-tenant-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.axonframework.samples</groupId>
-            <artifactId>axon-bank-query</artifactId>
+            <artifactId>bank-multi-tenant-query</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -1,4 +1,4 @@
-# Axon Bank
+# Bank Multi-Tenant
 
 A sample event-sourced banking application demonstrating Axon Framework capabilities, including multi-tenancy, projections, snapshotting, and replay.
 
@@ -126,7 +126,7 @@ axon.snapshotting.bank-account.threshold=50
 
 ```bash
 mvn clean install
-java -jar web/target/axon-bank-web-0.0.1-SNAPSHOT.jar
+java -jar web/target/bank-multi-tenant-web-0.0.1-SNAPSHOT.jar
 ```
 
 ### Distributed (Docker)

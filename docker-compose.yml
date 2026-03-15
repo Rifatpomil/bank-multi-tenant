@@ -1,14 +1,14 @@
 version: '2'
 
 services:
-  axonbank1:
-    image: axonframework/axonbank
+  bank-multi-tenant1:
+    image: bank-multi-tenant
     depends_on:
       - db
     ports:
       - "8080:8080"
-  axonbank2:
-    image: axonframework/axonbank
+  bank-multi-tenant2:
+    image: bank-multi-tenant
     depends_on:
       - db
     ports:
@@ -17,6 +17,6 @@ services:
     image: mysql:5.7.15
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=axonbank
+      - MYSQL_DATABASE=bank_multitenant
   rabbitmq:
     build: docker/rabbitmq/

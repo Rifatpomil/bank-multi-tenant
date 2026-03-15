@@ -18,14 +18,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>axon-bank-web</artifactId>
+    <artifactId>bank-multi-tenant-web</artifactId>
     <packaging>jar</packaging>
 
-    <name>Axon Bank - Web</name>
+    <name>Bank Multi-Tenant - Web</name>
 
     <parent>
         <groupId>org.axonframework.samples</groupId>
-        <artifactId>axon-bank</artifactId>
+        <artifactId>bank-multi-tenant</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -99,22 +99,22 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axon-bank-core-api</artifactId>
+            <artifactId>bank-multi-tenant-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axon-bank-core</artifactId>
+            <artifactId>bank-multi-tenant-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axon-bank-query</artifactId>
+            <artifactId>bank-multi-tenant-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axon-bank-ai</artifactId>
+            <artifactId>bank-multi-tenant-ai</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -131,7 +131,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
                 <configuration>
-                    <imageName>axonframework/axonbank</imageName>
+                    <imageName>bank-multi-tenant</imageName>
                     <baseImage>java:8</baseImage>
                     <entryPoint>["java", "-jar", "-Dspring.profiles.active=distributed", "/${project.build.finalName}.jar"]
                     </entryPoint>
