@@ -21,7 +21,7 @@ import org.axonframework.samples.bank.ai.TransactionContext;
 /**
  * Strategy interface for fraud detection.
  * Implementations analyze transactions and return a risk assessment.
- * Designed for easy swapping — plug in an ML model or LLM-based detector later.
+ * Designed for easy swapping — plug in a custom or rule-based detector as needed.
  */
 public interface FraudDetectionService {
 

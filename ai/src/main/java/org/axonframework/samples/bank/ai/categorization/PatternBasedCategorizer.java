@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Heuristic-based transaction categorizer.
  * Uses amount ranges, transaction types, and time patterns to assign categories.
- * Designed to be supplemented or replaced by an ML/LLM-based implementation.
+ * Designed to be supplemented or replaced by a custom implementation.
  */
 @Service
 public class PatternBasedCategorizer implements CategorizationService {
