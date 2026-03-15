@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>axon-bank</artifactId>
+        <groupId>org.axonframework.samples</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>axon-bank-ai</artifactId>
+    <name>Axon Bank AI</name>
+    <description>AI-powered analytics, fraud detection, anomaly alerts, financial insights,
+        balance forecasting, and natural language command interface.</description>
+
+    <dependencies>
+        <!-- Project modules -->
+        <dependency>
+            <groupId>org.axonframework.samples</groupId>
+            <artifactId>axon-bank-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.axonframework.samples</groupId>
+            <artifactId>axon-bank-query</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Spring Boot (inherited from parent, but needed for component scanning) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>
