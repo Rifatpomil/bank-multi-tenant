@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-muted: #cbd5e1;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+}
+
+body {
+    background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Navbar */
+.navbar-custom {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 15px 0;
+}
+.navbar-custom .navbar-brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+.navbar-custom .navbar-text {
+    color: var(--text-muted);
+}
+
+/* Glassmorphic Cards */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Modern Typography */
+h1, h2, h3, h4, h5 {
+    color: #fff;
+    font-weight: 600;
+    margin-top: 0;
+}
+.balance-display {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 15px 0;
+}
+
+/* Modern Buttons */
+.btn-modern {
+    border-radius: 12px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    border: none;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.btn-modern:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+.btn-gradient {
+    background: var(--primary-gradient);
+    color: white;
+}
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+}
+.btn-glass {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-glass:hover {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+/* Action Bar */
+.action-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+.action-grid .btn-modern {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+/* AI Command Bar */
+.ai-bar-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+    margin-bottom: 40px;
+    transition: all 0.3s;
+}
+.ai-bar-container:focus-within {
+    border-color: #7c3aed;
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+}
+.ai-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    padding: 15px 20px;
+    width: 100%;
+    outline: none;
+}
+.ai-input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+.ai-submit {
+    border-radius: 25px;
+    padding: 10px 25px;
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    font-weight: 600;
+}
+
+/* Modals Override */
+.modal-content {
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    color: white;
+}
+.modal-header {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.modal-footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.form-control {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 10px;
+}
+.form-control:focus {
+    background: rgba(0,0,0,0.3);
+    border-color: #7c3aed;
+    color: white;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+
+/* Custom Table for Modals */
+.table-glass {
+    color: white;
+    width: 100%;
+}
+.table-glass th {
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    color: var(--text-muted);
+}
+.table-glass td {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 15px 12px;
+}
+
+/* Category Badges */
+.badge-category {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.badge-income { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.badge-expense { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.badge-neutral { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+/* AI Notification HUD */
+#ai-hud {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 350px;
+    z-index: 9999;
+}
+.hud-alert {
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    border-left: 4px solid;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    color: white;
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.hud-alert.fraud { border-color: var(--danger); }
+.hud-alert.anomaly { border-color: var(--warning); }
+.hud-alert h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
+.hud-alert p { margin: 0; font-size: 0.9rem; color: #cbd5e1; }
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-state-icon {
+    font-size: 5rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}

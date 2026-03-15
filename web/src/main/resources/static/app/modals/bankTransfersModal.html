@@ -1,0 +1,43 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Smart Bank Transfers</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <table class="table-glass">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="tx in bankTransfers">
+                    <td style="color: #cbd5e1;">{{tx.timestampMillis | date:'medium'}}</td>
+                    <td>
+                        <span style="font-weight: 500;"
+                            ng-style="{color: tx.transactionType == 'Deposit' ? '#34d399' : '#f87171'}">
+                            {{tx.transactionType}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-category" ng-class="{
+                    'badge-income': tx.category == 'INCOME',
+                    'badge-expense': tx.category == 'SUBSCRIPTION' || tx.category == 'GROCERIES' || tx.category == 'UTILITIES',
+                    'badge-neutral': tx.category == 'UNKNOWN' || tx.category == 'TRANSFER'
+                }">{{tx.category}}</span>
+                    </td>
+                    <td style="font-weight: 600;">${{tx.amount | number:2}}</td>
+                </tr>
+                <tr ng-if="bankTransfers.length == 0">
+                    <td colspan="4" style="text-align: center; padding: 30px; color: #94a3b8;">
+                        No transactions found for this account.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-glass" type="button" ng-click="close()">Close</button>
+    </div>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="axonBank">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="favicon.ico">
+
+    <title>Axon Bank</title>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/bootswatch-cosmo/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/app/app.css"/>
+</head>
+
+<body>
+<div id="ai-hud" ng-controller="AiHudCtrl">
+    <!-- Fraud/Anomaly Notifications will slide in here -->
+    <div class="hud-alert {{alert.type}}" ng-repeat="alert in alerts">
+        <h4>{{alert.title}}</h4>
+        <p>{{alert.message}}</p>
+    </div>
+</div>
+
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 10px; vertical-align: middle;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                Axon Bank <span style="font-weight: 300; font-size: 1.2rem; color: #a78bfa;">| AI Edition</span>
+            </a>
+        </div>
+        <div class="navbar-form navbar-right">
+            <label class="navbar-text" style="margin-right: 10px;">Tenant:</label>
+            <select ng-model="currentTenant" ng-change="onTenantChange()" class="form-control" style="width: auto; display: inline-block;">
+                <option value="default">default</option>
+                <option value="tenant-a">tenant-a</option>
+                <option value="tenant-b">tenant-b</option>
+            </select>
+        </div>
+    </div>
+</nav>
+
+<div ng-controller="BankAccountsCtrl" class="container" style="margin-top: 30px;">
+    
+    <!-- AI Quick Command Bar -->
+    <div class="row" ng-if="bankAccounts.length > 0">
+        <div class="col-md-8 col-md-offset-2">
+            <form class="ai-bar-container" ng-submit="executeAiCommand()">
+                <input type="text" ng-model="aiCommand" class="ai-input" placeholder="✨ Try 'Transfer 50 to [account ID]' or 'Deposit 500'">
+                <button type="submit" class="ai-submit">Execute</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2>Your Accounts</h2>
+        <button ng-click="create()" class="btn btn-modern btn-gradient" type="submit">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" style="margin-right: 5px;"></span>
+            Create Account
+        </button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="row" ng-if="bankAccounts.length == 0">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="glass-card empty-state">
+                <div class="empty-state-icon">
+                    <span class="glyphicon glyphicon-piggy-bank"></span>
+                </div>
+                <h2>Welcome to Modern Banking</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px;">
+                    Experience seamless, AI-powered financial management. <br>Create your first account to get started.
+                </p>
+                <button ng-click="create()" class="btn btn-modern btn-gradient btn-lg">
+                    Create Bank Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts Grid -->
+    <div class="row">
+        <div class="col-md-6 col-lg-4" ng-repeat="bankAccount in bankAccounts">
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem; font-family: monospace;">{{bankAccount.axonBankAccountId | limitTo: 13}}...</span>
+                    <button ng-click="showInsights(bankAccount.axonBankAccountId)" class="btn btn-xs btn-glass" style="border-radius: 20px;">
+                        ✨ AI Insights
+                    </button>
+                </div>
+                
+                <div class="balance-display">
+                    ${{bankAccount.balance | number:2}}
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                    Overdraft Limit: ${{bankAccount.overdraftLimit | number:2}}
+                </div>
+                
+                <div class="action-grid">
+                    <button ng-click="deposit(bankAccount.axonBankAccountId)" class="btn btn-modern btn-glass">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Deposit
+                    </button>
+                    <button ng-click="withdraw(bankAccount.axonBankAccountId)" class="btn btn-modern btn-glass">
+                        <span class="glyphicon glyphicon-minus-sign"></span> Withdraw
+                    </button>
+                    <button ng-click="transfer(bankAccount.axonBankAccountId)" class="btn btn-modern btn-gradient">
+                        <span class="glyphicon glyphicon-transfer"></span> Transfer
+                    </button>
+                    <button ng-click="bankTransfers(bankAccount.axonBankAccountId)" class="btn btn-modern btn-glass" style="flex-basis: 100%;">
+                        <span class="glyphicon glyphicon-list-alt"></span> View Statements
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
+<script type="text/javascript" src="/webjars/angular-ui-bootstrap/ui-bootstrap.min.js"></script>
+<script type="text/javascript" src="/webjars/angular-ui-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script type="text/javascript" src="/webjars/stomp-websocket/lib/stomp.min.js"></script>
+<script type="text/javascript" src="/webjars/ng-stomp/dist/ng-stomp.min.js"></script>
+
+<script type="text/javascript" src="/app/app.js"></script>
+<script type="text/javascript" src="/app/services.js"></script>
+<script type="text/javascript" src="/app/controllers.js"></script>
+
+</body>
+</html>

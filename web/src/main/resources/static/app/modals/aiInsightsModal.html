@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">✨ AI Financial Insights</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div ng-if="loading" style="text-align: center; padding: 40px 0;">
+        <svg fill="none" viewBox="0 0 24 24"
+            style="animation: spin 1s linear infinite; width: 40px; height: 40px; color: #a78bfa;">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" stroke-opacity="0.25"></circle>
+            <path fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+        </svg>
+        <p style="margin-top: 15px; color: #cbd5e1;">Analyzing your transactions...</p>
+    </div>
+
+    <div ng-if="!loading">
+        <!-- Insights Summary -->
+        <h4 style="margin-bottom: 5px; color: #a78bfa;">Your Spending Behavior</h4>
+        <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
+            {{insights.summaryPhrase}}
+        </p>
+
+        <!-- Balance Forecast -->
+        <div
+            style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
+            <h4 style="margin-bottom: 15px; color: #6ee7b7;">30-Day Balance Forecast</h4>
+
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <span style="color: #cbd5e1; font-size: 1.1rem;">Projected Balance:</span>
+                <span style="font-size: 2.2rem; font-weight: 700; color: #fff;">
+                    ${{forecast.predictedBalance | number:2}}
+                </span>
+            </div>
+
+            <div
+                style="margin-top: 15px; font-size: 0.9rem; color: #94a3b8; display: flex; justify-content: space-between;">
+                <span>Low Estimate: ${{forecast.lowerBound | number:2}}</span>
+                <span>High Estimate: ${{forecast.upperBound | number:2}}</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-glass" type="button" ng-click="close()">Close</button>
+</div>
+
+<style>
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
