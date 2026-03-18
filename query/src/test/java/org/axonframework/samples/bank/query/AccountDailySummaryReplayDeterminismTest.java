@@ -28,6 +28,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
@@ -68,13 +70,13 @@ public class AccountDailySummaryReplayDeterminismTest {
         applyEvents(ts);
 
         List<AccountDailySummaryEntry> firstPass = repository.findByTenantIdAndAxonBankAccountIdOrderBySummaryDateDesc(
-                TENANT, ACCOUNT_ID, new org.springframework.data.domain.PageRequest(0, 10));
+                TENANT, ACCOUNT_ID, PageRequest.of(0, 10, Sort.unsorted()));
 
         repository.deleteAll();
         applyEvents(ts);
 
         List<AccountDailySummaryEntry> secondPass = repository.findByTenantIdAndAxonBankAccountIdOrderBySummaryDateDesc(
-                TENANT, ACCOUNT_ID, new org.springframework.data.domain.PageRequest(0, 10));
+                TENANT, ACCOUNT_ID, PageRequest.of(0, 10, Sort.unsorted()));
 
         assertThat(firstPass).hasSize(1);
         assertThat(secondPass).hasSize(1);

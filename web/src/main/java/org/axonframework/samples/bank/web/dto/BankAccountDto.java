@@ -19,11 +19,13 @@ package org.axonframework.samples.bank.web.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Min;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BankAccountDto {
 
+    @Min(0)
     private long overdraftLimit;
 }

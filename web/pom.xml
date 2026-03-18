@@ -47,56 +47,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- Required for STOMP with an external message broker -->
+
+        <!-- Spring Boot Starter Actuator -->
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-net</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.6.Final</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- WebJars -->
+        <!-- Spring Boot Starter Validation -->
         <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>angularjs</artifactId>
-            <version>1.4.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>angular-ui-bootstrap</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>3.3.7-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator</artifactId>
-            <version>0.30</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootswatch-cosmo</artifactId>
-            <version>3.3.5+4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars.bower</groupId>
-            <artifactId>ng-stomp</artifactId>
-            <version>0.3.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Spring AI - OpenAI -->
 
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.9</version>
-        </dependency>
-
+        <!-- Project modules -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>bank-multi-tenant-core-api</artifactId>
@@ -117,57 +83,13 @@
             <artifactId>bank-multi-tenant-ai</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-            <version>1.2.0</version>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.11</version>
-                <configuration>
-                    <imageName>bank-multi-tenant</imageName>
-                    <baseImage>java:8</baseImage>
-                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=distributed", "/${project.build.finalName}.jar"]
-                    </entryPoint>
-                    <!-- copy the service's jar file from target into the root directory of the image -->
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <jvmArguments>
-                        --add-opens java.base/java.lang=ALL-UNNAMED
-                        --add-opens java.base/java.lang.reflect=ALL-UNNAMED
-                        --add-opens java.base/java.lang.invoke=ALL-UNNAMED
-                        --add-opens java.base/java.util=ALL-UNNAMED
-                        --add-opens java.base/java.util.concurrent=ALL-UNNAMED
-                        --add-opens java.base/java.io=ALL-UNNAMED
-                        --add-opens java.base/java.net=ALL-UNNAMED
-                        --add-opens java.base/java.text=ALL-UNNAMED
-                        --add-opens java.base/java.math=ALL-UNNAMED
-                        --add-opens java.base/java.security=ALL-UNNAMED
-                        --add-opens java.base/sun.nio.ch=ALL-UNNAMED
-                        --add-opens java.base/sun.security.ssl=ALL-UNNAMED
-                        --add-opens java.desktop/java.beans=ALL-UNNAMED
-                        --add-opens java.desktop/java.awt.font=ALL-UNNAMED
-                        --add-opens java.desktop/java.awt=ALL-UNNAMED
-                        --add-opens java.rmi/sun.rmi.transport=ALL-UNNAMED
-                    </jvmArguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>

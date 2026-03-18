@@ -17,7 +17,7 @@
 package org.axonframework.samples.bank.api.bankaccount;
 
 import lombok.Value;
-import org.axonframework.commandhandling.TargetAggregateIdentifier;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Value
 public class WithdrawMoneyCommand {

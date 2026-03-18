@@ -27,10 +27,13 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 
 @Controller
+@Validated
 @Slf4j
 public class BankTransferController {
 
@@ -58,7 +61,7 @@ public class BankTransferController {
     }
 
     @MessageMapping("/bank-transfers/create")
-    public void create(BankTransferDto bankTransferDto) {
+    public void create(@Valid BankTransferDto bankTransferDto) {
         log.info("Create bank transfer with payload {}", bankTransferDto);
 
         String bankTransferId = UUID.randomUUID().toString();

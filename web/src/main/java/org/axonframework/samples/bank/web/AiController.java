@@ -38,6 +38,7 @@ import org.axonframework.samples.bank.api.banktransfer.CreateBankTransferCommand
 import org.axonframework.samples.bank.tenant.TenantConstants;
 import org.axonframework.samples.bank.tenant.TenantContext;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -104,7 +105,7 @@ public class AiController {
             @RequestParam(defaultValue = "20") int size) {
         String tenantId = resolveTenant();
         return categorizedTransactionRepository
-                .findByTenantIdAndAccountIdOrderByTimestampMillisDesc(tenantId, accountId, new PageRequest(page, size));
+                .findByTenantIdAndAccountIdOrderByTimestampMillisDesc(tenantId, accountId, PageRequest.of(page, size, Sort.unsorted()));
     }
 
     // ===== Financial Insights =====

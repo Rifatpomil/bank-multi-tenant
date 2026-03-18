@@ -1,11 +1,13 @@
 package org.axonframework.samples.bank.config;
 
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Distributed deployment configuration.
+ * Placeholder for distributed command bus setup when using a service registry.
+ */
 @Profile("distributed")
-@EnableDiscoveryClient
 @Configuration
 public class DistributedConfiguration {
 

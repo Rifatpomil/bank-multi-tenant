@@ -31,7 +31,7 @@ public class MovingAverageForecaster implements ForecastService {
     public BalanceForecast forecast(String tenantId, String accountId, int daysAhead) {
         List<AccountDailySummaryEntry> history = summaryRepository
             .findByTenantIdAndAxonBankAccountIdOrderBySummaryDateDesc(
-                tenantId, accountId, new PageRequest(0, HISTORY_DAYS));
+                tenantId, accountId, PageRequest.of(0, HISTORY_DAYS));
 
         if (history.isEmpty()) {
             return new BalanceForecast(accountId, Collections.emptyList(),

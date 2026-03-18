@@ -1,22 +1,13 @@
-version: '2'
-
 services:
-  bank-multi-tenant1:
-    image: bank-multi-tenant
-    depends_on:
-      - db
-    ports:
-      - "8080:8080"
-  bank-multi-tenant2:
-    image: bank-multi-tenant
-    depends_on:
-      - db
-    ports:
-      - "8081:8080"
   db:
-    image: mysql:5.7.15
+    image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=bank_multitenant
+    ports:
+      - "3307:3306"
   rabbitmq:
     build: docker/rabbitmq/
+    ports:
+      - "5672:5672"
+      - "15672:15672"

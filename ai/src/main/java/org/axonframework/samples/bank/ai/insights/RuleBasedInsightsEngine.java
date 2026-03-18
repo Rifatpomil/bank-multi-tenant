@@ -3,6 +3,7 @@ package org.axonframework.samples.bank.ai.insights;
 import org.axonframework.samples.bank.query.accountdaily.AccountDailySummaryEntry;
 import org.axonframework.samples.bank.query.accountdaily.AccountDailySummaryRepository;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -45,7 +46,7 @@ public class RuleBasedInsightsEngine implements FinancialInsightsService {
         // Fetch recent daily summaries (last 30 days worth)
         List<AccountDailySummaryEntry> summaries = summaryRepository
             .findByTenantIdAndAxonBankAccountIdOrderBySummaryDateDesc(
-                tenantId, accountId, new PageRequest(0, 30));
+                tenantId, accountId, PageRequest.of(0, 30, Sort.unsorted()));
 
         if (summaries.isEmpty()) {
             return new InsightResponse(

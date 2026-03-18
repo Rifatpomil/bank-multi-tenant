@@ -1,48 +1,59 @@
 <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">✨ AI Financial Insights</h3>
+    <button ng-click="close()" type="button" class="close" style="color: white; opacity: 0.8;">&times;</button>
+    <h3 class="modal-title" style="display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-brain" style="color: #a78bfa;"></i>
+        AI Financial Insights
+    </h3>
 </div>
-<div class="modal-body" id="modal-body">
-    <div ng-if="loading" style="text-align: center; padding: 40px 0;">
-        <svg fill="none" viewBox="0 0 24 24"
-            style="animation: spin 1s linear infinite; width: 40px; height: 40px; color: #a78bfa;">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" stroke-opacity="0.25"></circle>
-            <path fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-            </path>
-        </svg>
-        <p style="margin-top: 15px; color: #cbd5e1;">Analyzing your transactions...</p>
+<div class="modal-body" style="padding: 30px;">
+    <div ng-if="loading" class="text-center" style="padding: 40px;">
+        <i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; color: #7c3aed; margin-bottom: 20px;"></i>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">Analyzing your financial patterns...</p>
     </div>
 
     <div ng-if="!loading">
-        <!-- Insights Summary -->
-        <h4 style="margin-bottom: 5px; color: #a78bfa;">Your Spending Behavior</h4>
-        <p style="font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px;">
-            {{insights.summaryPhrase}}
-        </p>
-
-        <!-- Balance Forecast -->
-        <div
-            style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-            <h4 style="margin-bottom: 15px; color: #6ee7b7;">30-Day Balance Forecast</h4>
-
-            <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <span style="color: #cbd5e1; font-size: 1.1rem;">Projected Balance:</span>
-                <span style="font-size: 2.2rem; font-weight: 700; color: #fff;">
-                    ${{forecast.predictedBalance | number:2}}
-                </span>
-            </div>
-
-            <div
-                style="margin-top: 15px; font-size: 0.9rem; color: #94a3b8; display: flex; justify-content: space-between;">
-                <span>Low Estimate: ${{forecast.lowerBound | number:2}}</span>
-                <span>High Estimate: ${{forecast.upperBound | number:2}}</span>
+        <!-- AI Summary Card -->
+        <div class="glass-card" style="background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.2); margin-bottom: 25px;">
+            <h4 style="color: #c4b5fd; margin-bottom: 15px;">
+                <i class="fas fa-quote-left" style="font-size: 0.8rem; vertical-align: top; margin-right: 8px;"></i>
+                Summary
+            </h4>
+            <p style="font-size: 1.1rem; line-height: 1.6;">{{insights.answer}}</p>
+            <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                <span class="badge-category badge-neutral" style="font-size: 0.7rem;">Confidence: {{insights.confidence * 100 | number:0}}%</span>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <h4 style="margin-bottom: 15px;">Next Steps</h4>
+                <div class="list-group" style="background: transparent;">
+                    <div class="list-group-item" ng-repeat="followup in insights.suggestedFollowUps" 
+                         style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; margin-bottom: 8px; border-radius: 8px !important;">
+                        <i class="fas fa-arrow-right" style="color: #7c3aed; margin-right: 10px; font-size: 0.8rem;"></i>
+                        {{followup}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4 style="margin-bottom: 15px;">30-Day Forecast</h4>
+                <div class="glass-card" style="padding: 15px; margin-bottom: 0;">
+                    <div class="text-center">
+                        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Predicted Balance</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin: 10px 0;">
+                            ${{forecast.predictedBalance / 100 | number:2}}
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">
+                            Based on {{forecast.confidence * 100 | number:0}}% trend reliability
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-glass" type="button" ng-click="close()">Close</button>
+    <button ng-click="close()" class="btn btn-modern btn-glass">Close</button>
 </div>
 
 <style>

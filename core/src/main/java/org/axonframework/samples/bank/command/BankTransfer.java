@@ -17,7 +17,7 @@
 package org.axonframework.samples.bank.command;
 
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.model.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.samples.bank.api.banktransfer.BankTransferCompletedEvent;
 import org.axonframework.samples.bank.api.banktransfer.BankTransferCreatedEvent;
@@ -27,7 +27,7 @@ import org.axonframework.samples.bank.api.banktransfer.MarkBankTransferCompleted
 import org.axonframework.samples.bank.api.banktransfer.MarkBankTransferFailedCommand;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
 public class BankTransfer {

@@ -1,20 +1,26 @@
-<div>
-    <div class="modal-header">
-        <button ng-click="cancel()" type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h3 class="modal-title" id="modal-title">Create Bank Account</h3>
-    </div>
-    <div class="modal-body" id="modal-body">
-        <form>
-            <div class="form-group">
-                <label for="overdraftLimit">Overdraft Limit</label>
-                <input ng-model="bankAccount.overdraftLimit" type="number" min="0" class="form-control" id="overdraftLimit">
+<div class="modal-header">
+    <button ng-click="cancel()" type="button" class="close" style="color: white; opacity: 0.8;">&times;</button>
+    <h3 class="modal-title" style="display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-plus-circle" style="color: #7c3aed;"></i>
+        Open New Bank Account
+    </h3>
+</div>
+<div class="modal-body" style="padding: 30px;">
+    <form ng-submit="submit()">
+        <div class="form-group">
+            <label for="overdraftLimit" style="font-size: 1.1rem; margin-bottom: 10px; display: block;">Overdraft Limit ($)</label>
+            <div class="input-group">
+                <span class="input-group-addon" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #cbd5e1;">$</span>
+                <input ng-model="bankAccount.overdraftLimit" type="number" min="0" class="form-control" id="overdraftLimit" placeholder="e.g. 500" required>
             </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button ng-click="cancel()" class="btn btn-default" type="button">Cancel</button>
-        <button ng-click="submit()" class="btn btn-primary" type="button">Submit</button>
-    </div>
+            <p class="help-block" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px; line-height: 1.4;">
+                <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
+                This is the maximum amount you can withdraw below zero. Set to <strong>0</strong> if you don't want to allow negative balances.
+            </p>
+        </div>
+    </form>
+</div>
+<div class="modal-footer" style="padding: 20px 30px;">
+    <button ng-click="cancel()" class="btn btn-modern btn-glass" type="button">Cancel</button>
+    <button ng-click="submit()" class="btn btn-modern btn-gradient" type="submit">Create Account</button>
 </div>

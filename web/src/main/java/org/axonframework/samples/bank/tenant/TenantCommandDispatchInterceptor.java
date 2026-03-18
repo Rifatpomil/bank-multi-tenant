@@ -22,6 +22,7 @@ import org.axonframework.messaging.MessageDispatchInterceptor;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import javax.annotation.Nonnull;
 
 /**
  * Adds tenant_id to outgoing command metadata.
@@ -29,9 +30,10 @@ import java.util.function.BiFunction;
  */
 public class TenantCommandDispatchInterceptor implements MessageDispatchInterceptor<CommandMessage<?>> {
 
+    @Nonnull
     @Override
     public BiFunction<Integer, CommandMessage<?>, CommandMessage<?>> handle(
-            List<CommandMessage<?>> messages) {
+            @Nonnull List<? extends CommandMessage<?>> messages) {
         return (index, command) -> {
             String tenantId = TenantContext.getTenantId();
             return command.andMetaData(MetaData.with(TenantConstants.TENANT_ID_KEY, tenantId));

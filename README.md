@@ -1,102 +1,95 @@
-# Bank Multi-Tenant
+# Bank Multi-Tenant (CQRS, Event Sourcing & Spring AI)
 
-A sample event-sourced banking application demonstrating Axon Framework capabilities, including multi-tenancy, projections, snapshotting, and replay.
+This is a sample banking application built with a modern Java stack to demonstrate several advanced software patterns. It uses CQRS and Event Sourcing with the Axon Framework and integrates real AI features using Spring AI.
 
-## Domain
+It was originally a 2017-era project that has been fully modernized to a 2026 tech stack.
 
-The application consists of two aggregates: **Bank Account** and **Bank Transfer**. It balances complexity and simplicity to showcase Axon Framework building blocks without obscuring the core patterns.
+---
 
-## Architecture
+## Key Features
 
-```mermaid
-flowchart TB
-    subgraph Client["Client (WebSocket/STOMP)"]
-        WS[WebSocket Client]
-    end
+-   **CQRS & Event Sourcing**: A clean separation between writing data (Commands) and reading data (Queries). All state changes are stored as a sequence of events.
+-   **Multi-Tenancy**: Supports multiple tenants out-of-the-box. Data is isolated based on an `X-Tenant-ID` header, which propagates through the entire system.
+-   **AI-Powered Commands**: Uses an LLM to parse natural language commands like *"Transfer $50 to acc-123"* into structured system actions.
+-   **AI-Powered Insights (RAG)**: Ask questions about your account history in plain English. This uses a Retrieval-Augmented Generation (RAG) pattern to ground the AI's answers in your actual transaction data.
 
-    subgraph Web["Web Layer"]
-        BC[BankAccountController]
-        BTC[BankTransferController]
-        TC[TenantFilter / TenantChannelInterceptor]
-    end
+---
 
-    subgraph Command["Command Side"]
-        CG[CommandGateway]
-        CB[CommandBus]
-        BA[BankAccount Aggregate]
-        BT[BankTransfer Aggregate]
-        Saga[BankTransferManagement Saga]
-    end
+## Running Locally
 
-    subgraph Event["Event Store"]
-        ES[(Event Store)]
-    end
+Follow these steps to get the project running on your own computer.
 
-    subgraph Read["Read Side (Projections)"]
-        BAQ[BankAccountEventListener]
-        BTQ[BankTransferEventListener]
-        ADS[AccountDailySummaryEventListener]
-    end
+### **Prerequisites**
 
-    subgraph Tables["Read Model Tables"]
-        BA_Entry[(BankAccountEntry)]
-        BT_Entry[(BankTransferEntry)]
-        Daily[(AccountDailySummary)]
-    end
+-   **Java 20+ SDK**
+-   **Docker Desktop**
+-   **OpenAI API Key**
 
-    WS --> TC
-    TC --> BC
-    TC --> BTC
-    BC --> CG
-    BTC --> CG
-    CG --> CB
-    CB --> BA
-    CB --> BT
-    BA --> ES
-    BT --> ES
-    Saga --> CB
-    ES --> BAQ
-    ES --> BTQ
-    ES --> ADS
-    BAQ --> BA_Entry
-    BTQ --> BT_Entry
-    ADS --> Daily
-```
+---
 
-## Multi-Tenancy
+### **Step 1: Set up your OpenAI Key**
 
-Commands and events carry `tenant_id` in metadata. Read models are scoped by tenant.
+This project uses a `.env` file to manage the API key so it's not hardcoded.
 
-**Setting tenant context:**
-- **HTTP**: `X-Tenant-ID` header
-- **STOMP**: `tenant-id` header on SEND/SUBSCRIBE frames
-- **UI**: Tenant selector in navbar (default, tenant-a, tenant-b); choice persisted in sessionStorage
+1.  Create a new file named `.env` in the root folder.
+2.  Open the file and add this line, pasting your key after the `=`:
+    ```text
+    OPENAI_API_KEY=your-key-here
+    ```
 
-When not provided, tenant defaults to `"default"`.
+---
 
-**Note:** If you see a startup warning about correlation providers, `tenant_id` may not propagate to events. The app tries to add it at runtime; if that fails, provide a `Configurer` bean that calls `configureCorrelationDataProviders(...)` with `MessageOriginProvider` and `SimpleCorrelationDataProvider("tenant_id")`.
+### **Step 2: Start the Backend Services**
 
-## Projections (Read Models)
+The app needs a database (MySQL) and a message broker (RabbitMQ). Docker handles this.
 
-| Projection | Table | Processing Group | Purpose |
-|------------|-------|------------------|---------|
-| BankAccount | BankAccountEntry | default | Account list & balance |
-| BankTransfer | BankTransferEntry | default | Transfer status |
-| AccountDailySummary | account_daily_summary | account-daily-summary | Daily rollup (deposits, withdrawals, closing balance) |
+1.  Open a terminal in the project root.
+2.  Run the docker-compose command:
+    ```bash
+    docker compose up -d
+    ```
 
-## Replay / Rebuild
+---
 
-To rebuild the **AccountDailySummary** projection from the event store:
+### **Step 3: Build the Project**
 
-1. Set `axon.admin.rebuild-enabled=true` in `application.properties`.
-2. Configure admin credentials: `axon.admin.username` and `axon.admin.password` (default: admin/admin).
-3. Call the rebuild endpoint with HTTP Basic auth:
+Compile the Java code and run tests using the Maven wrapper.
 
-```bash
-curl -u admin:admin -X POST http://localhost:8080/admin/projections/account-daily-summary/rebuild
-```
+1.  In the same terminal, run:
+    ```bash
+    ./mvnw clean install
+    ```
 
-3. The processor resets its tracking token and replays all bank account events. Progress is asynchronous.
+---
+
+### **Step 4: Run the Application**
+
+Now, start the main web application.
+
+1.  Navigate into the `web` directory:
+    ```bash
+    cd web
+    ```
+2.  Run the Spring Boot application:
+    ```bash
+    ../mvnw spring-boot:run
+    ```
+
+---
+
+### **Step 5: Access the Dashboard**
+
+Open your web browser and go to: **[http://localhost:8080](http://localhost:8080)**
+
+---
+
+## Tech Stack
+
+-   **Backend**: Java 20, Spring Boot 3.4, Axon Framework 4.10, Spring AI
+-   **Database**: MySQL 8.0 (for event store & projections), H2 (for local dev)
+-   **Messaging**: RabbitMQ / AMQP
+-   **Frontend**: AngularJS 1.8 (with a modernized UI)
+-   **Testing**: JUnit 5, Mockito, Axon Test Fixtures
 
 **Order of operations:**
 - Clear `account_daily_summary` table

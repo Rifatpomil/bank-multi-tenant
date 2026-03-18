@@ -19,12 +19,17 @@ package org.axonframework.samples.bank.web.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class WithdrawalDto {
 
+    @NotBlank
     private String bankAccountId;
+
+    @Min(1)
     private long amount;
 }

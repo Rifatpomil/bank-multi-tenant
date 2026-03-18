@@ -31,10 +31,13 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 
 @Controller
+@Validated
 @MessageMapping("/bank-accounts")
 public class BankAccountController {
 
@@ -59,20 +62,20 @@ public class BankAccountController {
     }
 
     @MessageMapping("/create")
-    public void create(BankAccountDto bankAccountDto) {
+    public void create(@Valid BankAccountDto bankAccountDto) {
         String id = UUID.randomUUID().toString();
         CreateBankAccountCommand command = new CreateBankAccountCommand(id, bankAccountDto.getOverdraftLimit());
         commandGateway.send(command);
     }
 
     @MessageMapping("/withdraw")
-    public void withdraw(WithdrawalDto depositDto) {
+    public void withdraw(@Valid WithdrawalDto depositDto) {
         WithdrawMoneyCommand command = new WithdrawMoneyCommand(depositDto.getBankAccountId(), depositDto.getAmount());
         commandGateway.send(command);
     }
 
     @MessageMapping("/deposit")
-    public void deposit(DepositDto depositDto) {
+    public void deposit(@Valid DepositDto depositDto) {
         DepositMoneyCommand command = new DepositMoneyCommand(depositDto.getBankAccountId(), depositDto.getAmount());
         commandGateway.send(command);
     }

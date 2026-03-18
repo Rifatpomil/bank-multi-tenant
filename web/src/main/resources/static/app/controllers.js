@@ -2,6 +2,8 @@
 
 angular.module('bankMultiTenant')
     .controller('BankAccountsCtrl', function ($scope, $uibModal, BankAccountService, TenantService, AiService) {
+        $scope.bankAccounts = [];
+        $scope.aiCommand = '';
         $scope.currentTenant = TenantService.getTenantId();
         $scope.onTenantChange = function () {
             TenantService.setTenantId($scope.currentTenant);
@@ -9,6 +11,7 @@ angular.module('bankMultiTenant')
         };
 
         function updateBankAccounts(bankAccounts) {
+            console.log("Received bank account update via WebSocket:", bankAccounts);
             $scope.bankAccounts = bankAccounts;
         }
 
@@ -16,6 +19,7 @@ angular.module('bankMultiTenant')
             if (!$scope.aiCommand) return;
             var text = $scope.aiCommand;
             $scope.aiCommand = ''; // clear input
+            console.log("Sending NLP command:", text);
             AiService.executeCommand(text).then(function (response) {
                 if (response.data && response.data.parsedCommand) {
                     var parsed = response.data.parsedCommand;
@@ -126,14 +130,16 @@ angular.module('bankMultiTenant')
             });
     })
     .controller('CreateBankAccountModalCtrl', function ($uibModalInstance, $scope, BankAccountService) {
-        $scope.bankAccount = {};
+        $scope.bankAccount = { overdraftLimit: 0 };
+
+        $scope.submit = function () {
+            console.log("Submitting bank account with limit:", $scope.bankAccount.overdraftLimit);
+            BankAccountService.createBankAccount($scope.bankAccount.overdraftLimit);
+            $uibModalInstance.close();
+        };
 
         $scope.cancel = function () {
-            $uibModalInstance.dismiss();
-        };
-        $scope.submit = function () {
-            BankAccountService.createBankAccount($scope.bankAccount);
-            $uibModalInstance.close();
+            $uibModalInstance.dismiss('cancel');
         };
     })
     .controller('DepositMoneyModalCtrl', function ($uibModalInstance, $scope, BankAccountService, bankAccountId) {
@@ -209,9 +215,13 @@ angular.module('bankMultiTenant')
             $uibModalInstance.dismiss();
         };
     })
-    .controller('AiHudCtrl', function ($scope, $interval, AiService) {
+    .controller('AiHudCtrl', function ($scope, $interval, $timeout, AiService) {
         $scope.alerts = [];
         var alertCount = 0;
+
+        $scope.removeAlert = function (id) {
+            $scope.alerts = $scope.alerts.filter(function (a) { return a.id !== id; });
+        };
 
         function addAlert(type, title, message) {
             var id = alertCount++;
@@ -219,10 +229,8 @@ angular.module('bankMultiTenant')
             $scope.alerts.push(alertObj);
 
             // Auto dismiss after 7 seconds
-            setTimeout(function () {
-                $scope.$apply(function () {
-                    $scope.alerts = $scope.alerts.filter(function (a) { return a.id !== id; });
-                });
+            $timeout(function () {
+                $scope.removeAlert(id);
             }, 7000);
         }
 
@@ -231,14 +239,30 @@ angular.module('bankMultiTenant')
             AiService.getFraudAlerts().then(function (res) {
                 var newAlerts = res.data || [];
                 newAlerts.forEach(function (a) {
-                    addAlert('fraud', '🚨 Fraud Alert', "Suspicious transaction: $" + a.amount + " (" + a.reason + ")");
+                    var message = "Suspicious " + a.transactionType + " of $" + (a.transactionAmount / 100).toFixed(2) + 
+                                 ". Reasons: " + a.reasons.join(", ");
+                    
+                    var exists = $scope.alerts.some(function(existing) { 
+                        return existing.message === message;
+                    });
+                    if (!exists) {
+                        addAlert('fraud', '🚨 Fraud Alert', message);
+                    }
                 });
             });
 
             AiService.getAnomalyAlerts().then(function (res) {
                 var newAlerts = res.data || [];
                 newAlerts.forEach(function (a) {
-                    addAlert('anomaly', '⚠️ Anomaly Detected', "Unusual pattern: $" + a.amount + " (" + a.reason + ")");
+                    var message = "Unusual amount: $" + (a.actualAmount / 100).toFixed(2) + 
+                                 " (Expected avg: $" + (a.expectedMean / 100).toFixed(2) + ")";
+                    
+                    var exists = $scope.alerts.some(function(existing) { 
+                        return existing.message === message;
+                    });
+                    if (!exists) {
+                        addAlert('anomaly', '⚠️ Anomaly Detected', message);
+                    }
                 });
             });
         }, 3000);

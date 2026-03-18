@@ -20,14 +20,14 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.ChannelInterceptorAdapter;
+import org.springframework.messaging.support.ChannelInterceptor;
 
 /**
  * Sets tenant context from STOMP message headers (tenant-id).
  * WebSocket clients should include "tenant-id" in STOMP frame headers when
  * subscribing/sending.
  */
-public class TenantChannelInterceptor extends ChannelInterceptorAdapter {
+public class TenantChannelInterceptor implements ChannelInterceptor {
 
     public static final String STOMP_TENANT_HEADER = "tenant-id";
 

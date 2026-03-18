@@ -17,20 +17,22 @@
 package org.axonframework.samples.bank.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Protects /admin/** with HTTP Basic auth when axon.admin.rebuild-enabled=true.
- * Configure axon.admin.username and axon.admin.password in application
- * properties.
+ * Configure axon.admin.username and axon.admin.password in application properties.
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Value("${axon.admin.username:admin}")
     private String adminUsername;
@@ -41,31 +43,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${axon.admin.rebuild-enabled:false}")
     private boolean rebuildEnabled;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if (rebuildEnabled) {
             http
-                    .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().permitAll()
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .csrf().disable();
+                    .authorizeHttpRequests(auth -> auth
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .anyRequest().permitAll()
+                    )
+                    .httpBasic(httpBasic -> {})
+                    .csrf(csrf -> csrf.disable());
         } else {
             http
-                    .authorizeRequests()
-                    .anyRequest().permitAll()
-                    .and()
-                    .csrf().disable();
+                    .authorizeHttpRequests(auth -> auth
+                            .anyRequest().permitAll()
+                    )
+                    .csrf(csrf -> csrf.disable());
         }
+        return http.build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Bean
+    public UserDetailsService userDetailsService() {
         if (rebuildEnabled) {
-            auth.inMemoryAuthentication()
-                    .withUser(adminUsername).password(adminPassword).roles("ADMIN");
+            var user = User.withUsername(adminUsername)
+                    .password("{noop}" + adminPassword)
+                    .roles("ADMIN")
+                    .build();
+            return new InMemoryUserDetailsManager(user);
         }
+        return new InMemoryUserDetailsManager();
     }
 }

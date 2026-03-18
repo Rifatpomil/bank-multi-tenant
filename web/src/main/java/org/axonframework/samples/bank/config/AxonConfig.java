@@ -17,13 +17,11 @@
 package org.axonframework.samples.bank.config;
 
 import org.axonframework.commandhandling.SimpleCommandBus;
-import org.axonframework.commandhandling.model.Repository;
-import org.axonframework.config.SagaConfiguration;
+import org.axonframework.modelling.command.Repository;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor;
 import org.axonframework.samples.bank.command.BankAccount;
 import org.axonframework.samples.bank.command.BankAccountCommandHandler;
-import org.axonframework.samples.bank.command.BankTransferManagementSaga;
 import org.axonframework.messaging.correlation.SimpleCorrelationDataProvider;
 import org.axonframework.samples.bank.tenant.TenantCommandDispatchInterceptor;
 import org.axonframework.samples.bank.tenant.TenantConstants;
@@ -33,34 +31,38 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class AxonConfig {
 
-    @Autowired
+    @Autowired(required = false)
     private AxonConfiguration axonConfiguration;
-    @Autowired
+    @Autowired(required = false)
     private EventBus eventBus;
 
     @Bean
     @org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean(name = "bankAccountRepository")
     public Repository<BankAccount> defaultBankAccountRepository() {
+        if (axonConfiguration == null) {
+            return null;
+        }
         return axonConfiguration.repository(BankAccount.class);
     }
 
     @Bean
     public BankAccountCommandHandler bankAccountCommandHandler(Repository<BankAccount> bankAccountRepository) {
+        if (bankAccountRepository == null || eventBus == null) {
+            return null;
+        }
         return new BankAccountCommandHandler(bankAccountRepository, eventBus);
-    }
-
-    @Bean
-    public SagaConfiguration<BankTransferManagementSaga> bankTransferManagementSagaConfiguration() {
-        return SagaConfiguration.trackingSagaManager(BankTransferManagementSaga.class);
     }
 
     @PostConstruct
     public void registerTenantCorrelation() {
+        if (axonConfiguration == null) {
+            return;
+        }
         try {
             axonConfiguration.correlationDataProviders()
                     .add(new SimpleCorrelationDataProvider(TenantConstants.TENANT_ID_KEY));

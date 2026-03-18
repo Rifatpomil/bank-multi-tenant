@@ -72,8 +72,9 @@ angular.module('bankMultiTenant')
                 return deferred.promise;
             },
 
-            createBankAccount: function (data) {
-                $stomp.send('/app/bank-accounts/create', data, tenantHeaders());
+            createBankAccount: function (overdraftLimit) {
+                console.log("WebSocket sending create command with limit:", overdraftLimit);
+                $stomp.send('/app/bank-accounts/create', { overdraftLimit: overdraftLimit }, tenantHeaders());
             },
             deposit: function (data) {
                 $stomp.send('/app/bank-accounts/deposit', data, tenantHeaders());

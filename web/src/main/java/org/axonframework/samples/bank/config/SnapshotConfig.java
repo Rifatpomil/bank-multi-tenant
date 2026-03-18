@@ -16,7 +16,7 @@
 
 package org.axonframework.samples.bank.config;
 
-import org.axonframework.commandhandling.model.Repository;
+import org.axonframework.modelling.command.Repository;
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.axonframework.eventsourcing.GenericAggregateFactory;
@@ -44,7 +44,10 @@ public class SnapshotConfig {
             Snapshotter snapshotter,
             @Value("${axon.snapshotting.bank-account.threshold:50}") int threshold) {
         EventCountSnapshotTriggerDefinition trigger = new EventCountSnapshotTriggerDefinition(snapshotter, threshold);
-        return new EventSourcingRepository<>(new GenericAggregateFactory<>(BankAccount.class),
-                eventStore, trigger);
+        return EventSourcingRepository.builder(BankAccount.class)
+                .aggregateFactory(new GenericAggregateFactory<>(BankAccount.class))
+                .eventStore(eventStore)
+                .snapshotTriggerDefinition(trigger)
+                .build();
     }
 }

@@ -17,9 +17,9 @@
 package org.axonframework.samples.bank.command;
 
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.model.Aggregate;
-import org.axonframework.commandhandling.model.AggregateNotFoundException;
-import org.axonframework.commandhandling.model.Repository;
+import org.axonframework.modelling.command.Aggregate;
+import org.axonframework.modelling.command.AggregateNotFoundException;
+import org.axonframework.modelling.command.Repository;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.samples.bank.api.bankaccount.*;
 
